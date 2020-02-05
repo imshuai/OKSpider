@@ -225,7 +225,7 @@ func list(pg int) {
 		if isUpdated {
 			vidChan <- vid
 		} else {
-			log.Printf("ignore vod[%d], last update time[%v] but this time[%v]\n", vid, lastUpdateTime, updateTime)
+			log.Printf("ignore vod[%6s], last update time[%v] but this time[%v]\n", strconv.FormatUint(vid, 10), lastUpdateTime, updateTime)
 		}
 
 	}
