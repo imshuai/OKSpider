@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -19,10 +20,10 @@ import (
 const (
 	entryList   = "https://api.okzy.tv/api.php/provide/vod/at/json/?ac=list&pg="
 	entryDetail = "https://api.okzy.tv/api.php/provide/vod/at/json/?ac=detail&ids="
-	timeOut     = time.Second * 30
 )
 
 var (
+	timeOut    = time.Second * 30
 	pgCount    int
 	totalCount int
 	vidChan    chan uint64
@@ -147,6 +148,17 @@ func init() {
 }
 
 func main() {
+	if len(os.Args) == 2 {
+		var t time.Duration
+		var err error
+		t, err = time.ParseDuration(os.Args[1])
+		if err != nil {
+			log.Println(err)
+			t = 0
+		} else {
+			timeOut = t
+		}
+	}
 	defer rPool.Close()
 	resp, err := get(entryList + "1")
 	if err != nil {
