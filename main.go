@@ -272,8 +272,16 @@ func detail(ch <-chan uint64) {
 					t := strings.Split(url, "$")
 					if len(t) == 2 {
 						playURL[t[0]] = append(playURL[t[0]], t[1])
-					} else if len(t) == 1 && strings.HasPrefix(t[0], "http") {
-						playURL[vod.Name] = append(playURL[vod.Name], t[0])
+					} else if len(t) == 1 {
+						if strings.HasPrefix(t[0], "http") {
+							playURL[vod.Name] = append(playURL[vod.Name], t[0])
+						} else {
+							reg, _ := regexp.Compile("https?://[-A-Za-z0-9+&@#/%?=~_|!:,.;/]+.+(.m3u8|)")
+							s := reg.FindString(t[0])
+							if s != "" && strings.HasPrefix(s, "http") {
+								playURL[vod.Name] = append(playURL[vod.Name], s)
+							}
+						}
 					} else {
 						log.Printf("get vod[%d] play urls faild, url[%s]\n", vod.ID, url)
 					}
