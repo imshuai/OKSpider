@@ -1,2 +1,4 @@
 #DIR
 bin
+vods.db
+vods.db.lock

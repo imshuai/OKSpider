@@ -7,5 +7,6 @@ require (
 	github.com/andybalholm/cascadia v1.1.0 // indirect
 	github.com/bitly/go-simplejson v0.5.0
 	github.com/boltdb/bolt v1.3.1
+	github.com/gomodule/redigo v2.0.0+incompatible
 	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa // indirect
 )
