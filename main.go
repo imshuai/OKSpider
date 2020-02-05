@@ -13,14 +13,13 @@ import (
 	"time"
 
 	sjson "github.com/bitly/go-simplejson"
-	"github.com/boltdb/bolt"
 	"github.com/gomodule/redigo/redis"
 )
 
 const (
 	entryList   = "https://api.okzy.tv/api.php/provide/vod/at/json/?ac=list&pg="
 	entryDetail = "https://api.okzy.tv/api.php/provide/vod/at/json/?ac=detail&ids="
-	timeOut     = time.Second * 5
+	timeOut     = time.Second * 30
 )
 
 var (
@@ -138,9 +137,6 @@ func (v *vod) key() string {
 func init() {
 	vidChan = make(chan uint64, 10)
 	vodChan = make(chan *vod, 50)
-	opt := bolt.DefaultOptions
-	opt.Timeout = time.Second * 1
-	opt.NoGrowSync = true
 	rPool = redis.NewPool(func() (redis.Conn, error) {
 		conn, err := redis.Dial("tcp", "192.168.1.2:6379", redis.DialConnectTimeout(time.Second*1), redis.DialDatabase(0), redis.DialKeepAlive(time.Second*10))
 		if err != nil {
